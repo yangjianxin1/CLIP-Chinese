@@ -38,9 +38,9 @@ def main():
     # 初始化线程池
     pool = multiprocessing.Pool(processes=thread_num)
     for _, row in tqdm(df.iterrows()):
-        image_file = row['image']
+        filename = row['filename']
         url = row['url']
-        file = join(out_path, image_file)
+        file = join(out_path, filename)
         # 如果已经存在，则跳过
         if os.path.exists(file):
             continue
