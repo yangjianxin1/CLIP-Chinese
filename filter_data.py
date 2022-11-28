@@ -24,10 +24,10 @@ def filter_default_image(default_file, file):
 
 
 def main():
-    train_file = './data/train-2.5M.csv'
+    train_file = './data/train.csv'
     image_path = './data/images'
     default_file = './data/train-2.jpg'
-    out_file = './data/train-2.5M-filter.csv'
+    out_file = './data/train-filter.csv'
     delete_cnt = 0
     origin_image_cnt = 0
 
