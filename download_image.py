@@ -14,15 +14,19 @@ from loguru import logger
 
 def download(file, url):
     try:
-        response = requests.get(url)
+        headers = {"User-Agent": "Chrome/68.0.3440.106"}
+        response = requests.get(url, headers=headers)
+        status_code = response.status_code
+        content_type = response.headers.get('Content-Type')
+        # 请求成功并且不是gif图
+        if status_code == 200 and content_type != 'image/gif':
+            image = response.content
+            with open(file, 'wb') as f:
+                f.write(image)
     except Exception as e:
         # 下载图片失败
         logger.info('downloading image error, url:{}'.format(url))
         logger.info(e)
-        return
-    image = response.content
-    with open(file, 'wb') as f:
-        f.write(image)
 
 
 def main():
