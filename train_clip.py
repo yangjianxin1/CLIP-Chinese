@@ -22,7 +22,7 @@ from module.datacollator import CLIPCollator
 
 def load_model_and_processor(clip_pretrain_path, bert_pretrain_path):
     """
-    加载模型和输入的processor
+    加载模型和输入的processor，文本编码器与图像编码器分别来自不同的预训练模型，适用于初次做域内预训练
     :param clip_pretrain_path:
     :param bert_pretrain_path:
     :return:
@@ -56,6 +56,26 @@ def load_model_and_processor(clip_pretrain_path, bert_pretrain_path):
     return bert_clip_model, clip_processor
 
 
+def load_model_and_processor_from_bert_clip(clip_pretrain_path):
+    """
+    加载模型和输入的processor。整个模型权重均加载自BertModel的checkpoint，适用于已经使用域内数据做预训练后，加载checkpoint继续预训练。
+    :param clip_pretrain_path:
+    """
+    # 加载模型
+    model = BertCLIPModel.from_pretrained(clip_pretrain_path)
+    # 将vision_model的权重冻结
+    for name, param in model.vision_model.named_parameters():
+        param.requires_grad = False
+
+    # feature_extractor = CLIPFeatureExtractor.from_pretrained(clip_pretrain_path)
+    # tokenizer = BertTokenizerFast.from_pretrained(clip_pretrain_path)
+    # note: 代码库默认使用CLIPTokenizer, 这里需要设置自己需要的tokenizer的名称
+    CLIPProcessor.tokenizer_class = 'BertTokenizerFast'
+    # clip_processor = CLIPProcessor(feature_extractor=feature_extractor, tokenizer=tokenizer)
+    clip_processor = CLIPProcessor.from_pretrained(clip_pretrain_path)
+    return model, clip_processor
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--train_args_file", type=str, default='train_args/train_clip-bak.json', help="")
@@ -74,11 +94,15 @@ def main():
         json.dump(train_args, f, indent=2)
     # 设置随机种子
     set_seed(training_args.seed)
-    # 加载模型和处理器
-    bert_clip_model, clip_processor = load_model_and_processor(args.clip_pretrain_path, args.bert_pretrain_path)
+    # 已经有了一版BertCLIP的预训练权重，直接加载
+    if args.load_from_bert_clip:
+        bert_clip_model, clip_processor = load_model_and_processor_from_bert_clip(args.clip_pretrain_path)
+    # vision encoder和text encoder分别加载自不同的预训练权重
+    else:
+        bert_clip_model, clip_processor = load_model_and_processor(args.clip_pretrain_path, args.bert_pretrain_path)
     # 加载数据集
-    train_dataset = CLIPDataset(args.train_file, clip_processor)
-    test_dataset = CLIPDataset(args.test_file, clip_processor)
+    train_dataset = CLIPDataset(args.train_file, clip_processor, args.image_path)
+    test_dataset = CLIPDataset(args.test_file, clip_processor, args.image_path)
     # 初始化collator
     data_collator = CLIPCollator(clip_processor=clip_processor, max_seq_length=args.max_seq_length)
 

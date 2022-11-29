@@ -2,6 +2,8 @@
     "output_dir": "output/clip",
     "clip_pretrain_path": "openai/clip-vit-base-patch32",
     "bert_pretrain_path": "Langboat/mengzi-bert-base",
+    "load_from_bert_clip": false,
+    "image_path": "./data/images",
     "train_file": "./data/train.csv",
     "test_file": "./data/eval.csv",
     "num_train_epochs": 50,
