@@ -27,6 +27,5 @@
     "dataloader_num_workers": 30,
     "save_strategy": "steps",
     "weight_decay": 0,
-    "max_grad_norm": 1.0,
-    "greater_is_better": true
+    "max_grad_norm": 1.0
 }
