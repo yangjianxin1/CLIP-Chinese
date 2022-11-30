@@ -4,11 +4,11 @@
 微信公众号【YeungNLP】文章：[xxx]() ，文章内可获取139w中文图文对预训练数据，以及中文CLIP预训练权重。
 
 CLIP是由OpenAI提出的一种多模态对比学习方法，原模型使用了4亿个图文对进行对比学习训练，在下游的各种任务上均取得了不错的效果，并且在Zero-Shot任务上效果也令人惊艳。 
-模型论文可参考[CLIP]()
+模型论文可参考[CLIP论文]()
 
 由于原生的CLIP模型是基于英文语料训练的，无法在中文任务中使用，本项目便是为了解决该问题。 本项目的主要工作如下：
-- 编写Vit+Bert结构的CLIP模型，以及预训练的pipeline。
-- 基于LiT-tuning（Locked-image Text tuning）的方法，使用137万中文文本数据，对中文CLIP模型进行预训练。
+- 编写Vit+Bert结构的CLIP模型，下面将其称为BertCLIP模型，以及预训练的pipeline。
+- 基于LiT-tuning（Locked-image Text tuning）的方法，使用137万中文文本数据，对BertCLIP模型进行预训练。
 - 在图文相似度、文本相似度、图图相似度等任务上，验证预训练模型的有效性。
 - 分享137w中文图文对数据，分享预训练模型权重。
 
@@ -36,7 +36,7 @@ python==3.8、transformers==4.18.0、torch==1.12.0
 - predict_similarity.py：计算图文相似度、文本相似度、图图相似度的脚本
 
 ## 模型介绍与训练细节
-笔者编写了一个基于Vit+Bert结构的CLIP模型，下面将其称为BertCLIP模型，模型结构与原生CLIP大同小异，如下图所示。
+笔者编写了一个基于Vit+Bert结构的BertCLIP模型，模型结构与原生CLIP大同小异，如下图所示。
 
 ![model](images/model.png)
 
