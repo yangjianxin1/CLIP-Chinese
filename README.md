@@ -41,11 +41,9 @@ python==3.8、transformers==4.18.0、torch==1.12.0
 ![model](images/model.png)
 
 预训练时，Vit与Bert分别加载不同的预训练权重，进行初始化。其中Vit的权重使用openai的clip模型进行初始化，
-而Bert的权重使用mengzi中文预训练权重进行初始化。
+而Bert的权重使用mengzi中文预训练权重进行初始化。 
 
-在训练的时候，使用LiT-tuning（Locked-image Text tuning）的策略，也就是将Vit的权重进行冻结，对模型的其他参数进行训练。
-
-使用137w的中文图文对，batch size=768，训了n步，训练loss大概降到0.7左右。
+在训练的时候，使用LiT-tuning（Locked-image Text tuning）的策略，也就是将Vit的权重进行冻结，对模型的其他参数进行训练。使用137w的中文图文对，batch size=768，训了n步，训练loss大概降到0.7左右。
 
 ## 使用方法
 
@@ -66,15 +64,50 @@ processor = CLIPProcessor.from_pretrained(model_name_or_path)
 # 预处理输入
 url = "http://images.cocodataset.org/val2017/000000039769.jpg"
 image = Image.open(requests.get(url, stream=True).raw)
-inputs = processor(text=["a photo of a cat", "a photo of a dog"], images=image, return_tensors="pt", padding=True)
+inputs = processor(text=["一只小狗在摇尾巴", "一只小猪在吃饭"], images=image, return_tensors="pt", padding=True)
 
 outputs = model(**inputs)
 logits_per_image = outputs.logits_per_image  # image-text的相似度得分
 probs = logits_per_image.softmax(dim=1)  # 对分数进行归一化
 ```
 
+单独加载图像编码器，进行下游任务
+```python
+from PIL import Image
+import requests
+from transformers import CLIPProcessor, CLIPVisionModel
 
-作者把训练的Bert模型权重也进行了分享，可以直接使用BertModel直接加载
+model_name_or_path = ''
+model = CLIPVisionModel.from_pretrained(model_name_or_path)
+processor = CLIPProcessor.from_pretrained(model_name_or_path)
+
+url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+image = Image.open(requests.get(url, stream=True).raw)
+
+inputs = processor(images=image, return_tensors="pt")
+
+outputs = model(**inputs)
+last_hidden_state = outputs.last_hidden_state
+pooled_output = outputs.pooler_output 
+```
+
+单独加载文本编码器，进行下游任务
+```python
+from module.model import BertCLIPTextModel
+from transformers import BertTokenizerFast
+
+model_name_or_path = ''
+model = BertCLIPTextModel.from_pretrained(model_name_or_path)
+tokenizer = BertTokenizerFast.from_pretrained(model_name_or_path)
+
+inputs = tokenizer(["一只小狗在摇尾巴", "一只小猪在吃饭"], padding=True, return_tensors="pt")
+
+outputs = model(**inputs)
+last_hidden_state = outputs.last_hidden_state
+pooled_output = outputs.pooler_output
+```
+
+作者把训练好的Bert模型权重也单独拎出来，可以直接使用BertModel直接加载，进行下游任务
 ```python
 from transformers import BertTokenizer, BertModel
 
@@ -127,18 +160,28 @@ text,url,filename
 
 ### 开始训练
 ```
-CUDA_VISIBLE_DEVICES=0 python train_clip.py --train_args_file train_args/train_clip-bak.json
+CUDA_VISIBLE_DEVICES=0 python train_clip.py --train_args_file train_args/train_clip.json
 
 后台运行：
-CUDA_VISIBLE_DEVICES=0 nohup python train_clip.py --train_args_file train_args/train_clip-bak.json &
+CUDA_VISIBLE_DEVICES=0 nohup python train_clip.py --train_args_file train_args/train_clip.json &
 ```
 
+### 相似度计算
+作者实现了图文相似度、文本相似度、图图相似度的计算脚本，在xxx文件中
 
 
+## 效果展示
+### 图文相似度计算
 
+### 文本相似度计算
 
-| 预训练模型  | 预训练模型地址 |模型描述|
-|--------|------|--------|
-| xxx    |xxx |xxx|
+### 图图相似度计算
+
+## 模型权重分享
+
+| 预训练模型         | 预训练模型地址 |模型描述|
+|---------------|------|--------|
+| BertCLIP的整体权重 |xxx |xxx|
+| 预训练好的Bert的权重  |xxx |xxx|
 
 
