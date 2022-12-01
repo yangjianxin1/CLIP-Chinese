@@ -1,4 +1,4 @@
-from module.model import BertCLIPModel
+from component.model import BertCLIPModel
 from transformers import (
     CLIPConfig,
     BertModel,
@@ -11,13 +11,13 @@ from transformers import (
     Trainer,
 )
 from loguru import logger
-from module.dataset import CLIPDataset
-from module.argument import CLIPArguments
+from component.dataset import CLIPDataset
+from component.argument import CLIPArguments
 import argparse
 import os
 import json
 from os.path import join
-from module.datacollator import CLIPCollator
+from component.datacollator import CLIPCollator
 
 
 def load_model_and_processor(clip_pretrain_path, bert_pretrain_path):
