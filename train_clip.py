@@ -122,13 +122,14 @@ def main():
     trainer.log_metrics("train", metrics)
     trainer.save_metrics("train", metrics)
     trainer.save_state()
-    trainer.save_model(join(train_args.output_dir, 'checkpoint-final'))
+    trainer.save_model(join(training_args.output_dir, 'checkpoint-final'))
 
     # 评测验证集的指标
-    logger.info("*** Evaluate ***")
-    metrics = trainer.evaluate(test_dataset)
-    trainer.log_metrics("eval", metrics)
-    trainer.save_metrics("eval", metrics)
+    if args.test_file is not None:
+        logger.info("*** start test ***")
+        metrics = trainer.evaluate(test_dataset)
+        trainer.log_metrics("test", metrics)
+        trainer.save_metrics("test", metrics)
 
 
 if __name__ == '__main__':
