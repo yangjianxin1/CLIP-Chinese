@@ -22,9 +22,10 @@ def main():
 
         # 如果存在该图片
         if os.path.exists(file):
-            # 判断图片是否为gif图
+            # 判断图片是否为gif图或者损坏
             img_type = imghdr.what(file)
-            if img_type == 'gif':
+            # 图片损坏，或者为gif图，则跳过
+            if img_type is None or img_type == 'gif':
                 print('remove file:{}'.format(file))
                 os.remove(file)
             else:
