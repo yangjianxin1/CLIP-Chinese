@@ -1,18 +1,16 @@
 # CLIP-Chinese：中文多模态对比学习CLIP预训练模型
 
 ## 项目描述
-微信公众号【YeungNLP】文章：[xxx]() ，文章内可获取139w中文图文对预训练数据，以及中文CLIP预训练权重。
+微信公众号【YeungNLP】文章：[xxx]() ，文章内可获取140w中文图文对预训练数据，以及中文CLIP预训练权重。
 
 CLIP是由OpenAI提出的一种多模态对比学习方法，原模型使用了4亿个图文对进行对比学习训练，在下游的各种任务上均取得了不错的效果，并且在Zero-Shot任务上效果也令人惊艳。 
-模型论文可参考[CLIP论文]()
+模型论文可参考[CLIP论文：Learning Transferable Visual Models From Natural Language Supervision](https://arxiv.org/abs/2103.00020)
 
 由于原生的CLIP模型是基于英文语料训练的，无法在中文任务中使用，本项目便是为了解决该问题。 本项目的主要工作如下：
 - 编写Vit+Bert结构的CLIP模型，下面将其称为BertCLIP模型，以及预训练的pipeline。
-- 基于LiT-tuning（Locked-image Text tuning）的方法，使用137万中文文本数据，对BertCLIP模型进行预训练。
+- 基于LiT-tuning（Locked-image Text tuning）的方法，使用140万中文文本数据，对BertCLIP模型进行预训练。
 - 在图文相似度、文本相似度、图图相似度等任务上，验证预训练模型的有效性。
-- 分享137w中文图文对数据，分享预训练模型权重。
-
-[中文作文生成模型](#model_share)
+- 分享140w中文图文对数据，分享预训练模型权重。
 
 
 ## 运行环境
@@ -22,7 +20,7 @@ python==3.8、transformers==4.18.0、torch==1.12.0
 ## 项目结构
 - data:存放训练数据
   - images：存放训练图片
-  - images_demo：存放一些测试的图片
+- images：存放一些测试的图片
 - module:一些模块
   - argument.py：定制一些训练配置参数
   - configuration.py：模型配置config
@@ -43,7 +41,8 @@ python==3.8、transformers==4.18.0、torch==1.12.0
 预训练时，Vit与Bert分别加载不同的预训练权重，进行初始化。其中Vit的权重使用openai的clip模型进行初始化，
 而Bert的权重使用mengzi中文预训练权重进行初始化。 
 
-在训练的时候，使用LiT-tuning（Locked-image Text tuning）的策略，也就是将Vit的权重进行冻结，对模型的其他参数进行训练。使用137w的中文图文对，batch size=768，训了n步，训练loss大概降到0.7左右。
+在训练的时候，使用LiT-tuning（Locked-image Text tuning）的策略，也就是将Vit的权重进行冻结，对模型的其他参数进行训练。使用140w的中文图文对，过滤掉一些坏图，
+batch size=768，训练50个epoch，大概73100个step，最终训练loss降到xxx左右。
 
 ## 使用方法
 
@@ -134,7 +133,7 @@ model = BertModel.from_pretrained(model_name_or_path)
 
 
 ### 获取训练数据
-可以直接使用作者分享的137w的中文训练数据，数据详见公众号文章，也可以使用自己的训练数据。训练数据为csv文件，格式如下，其中filename表示图片下载后的文件名。
+可以直接使用作者分享的140w的中文训练数据，数据可从公众号文章中获取。也可以使用自己的训练数据。训练数据为csv文件，格式如下，其中filename表示图片下载后的文件名。
 ```
 text,url,filename
 欧美夏季ebay连衣裙 气质圆领通勤绑带收腰连衣裙 zc3730,"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fcbu01.alicdn.com%2Fimg%2Fibank%2F2020%2F527%2F038%2F17187830725_1528924397.220x220.jpg&refer=http%3A%2F%2Fcbu01.alicdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1632524815&t=d66159b43fb0335c11898f9764847ea7",test-0.jpg
