@@ -102,7 +102,6 @@ def main():
         bert_clip_model, clip_processor = load_model_and_processor(args.clip_pretrain_path, args.bert_pretrain_path)
     # 加载数据集
     train_dataset = CLIPDataset(args.train_file, clip_processor, args.image_path)
-    test_dataset = CLIPDataset(args.test_file, clip_processor, args.image_path)
     # 初始化collator
     data_collator = CLIPCollator(clip_processor=clip_processor, max_seq_length=args.max_seq_length)
 
@@ -127,6 +126,7 @@ def main():
     # 评测验证集的指标
     if args.test_file is not None:
         logger.info("*** start test ***")
+        test_dataset = CLIPDataset(args.test_file, clip_processor, args.image_path)
         metrics = trainer.evaluate(test_dataset)
         trainer.log_metrics("test", metrics)
         trainer.save_metrics("test", metrics)
