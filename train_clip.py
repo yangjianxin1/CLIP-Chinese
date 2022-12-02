@@ -78,7 +78,7 @@ def load_model_and_processor_from_bert_clip(clip_pretrain_path):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--train_args_file", type=str, default='train_args/train_clip-bak.json', help="")
+    parser.add_argument("--train_args_file", type=str, default='train_args/train_clip.json', help="")
     args = parser.parse_args()
     train_args_file = args.train_args_file
     # 读取参数配置
