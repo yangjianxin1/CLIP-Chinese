@@ -13,11 +13,12 @@ CLIP是由OpenAI提出的一种多模态对比学习方法，原模型使用了4
 - 分享140w中文图文对数据，分享预训练模型权重。
 
 ## 预模型权重分享
+预训练权重使用方式详见下文
 
-| 预训练模型         | 预训练模型名称 | 模型地址                                                        |
-|---------------|---------|-------------------------------------------------------------|
+| 预训练模型    | 预训练模型名称 | 模型地址                                                        |
+|----------|---------|-------------------------------------------------------------|
 | BertCLIP的整体权重 | YeungNLP/clip-vit-bert-chinese-1M     | https://huggingface.co/YeungNLP/clip-vit-bert-chinese-1M    |
-| 预训练好的Bert的权重  | YeungNLP/bert-from-clip-chinese-1M     | https://huggingface.co/YeungNLP/bert-from-clip-chinese-1M   |
+| Bert的权重  | YeungNLP/bert-from-clip-chinese-1M     | https://huggingface.co/YeungNLP/bert-from-clip-chinese-1M   |
 
 ## 运行环境
 python==3.8、transformers==4.18.0、torch==1.12.0
