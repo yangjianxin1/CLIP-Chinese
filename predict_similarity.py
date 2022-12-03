@@ -69,8 +69,12 @@ def cal_text_text_sim(model, clip_processor):
     """
     print('-------------- 计算文本相似度 --------------')
     texts = [
-        '秋天跑车唯美图片桌面壁纸', '可爱的小鸡', '一群可爱的小黄鸡在篮子里', '一只小狗', '一只可爱的小猫', '清澈的湖水，蓝蓝的天空，茂密的树木',
-        '冬日里，一只老虎在雪地玩耍', '一只老虎在河边喝水', '一辆公交车停在路边', '一只公鸡在打鸣', '一张小狗子的图片', ''
+        '桑巴军团', '巴西', '日耳曼战车',
+        '德国', '一个圆圆的月亮高高挂在天空', '夜幕中的白玉盘升起，星光灿烂', '小猪', '佩奇', '足球场', '绿茵',
+        '雪花漫天飞舞，狂风怒号，天地之间白茫茫一片', '北国风光，千里冰封，万里雪飘，银装素裹',
+        '大漠沙如雪，燕山月似钩', '月光洒在沙滩上，就像铺上了一层白皑皑的雪。燕山上，月亮像钩子一般',
+        '天街小雨润如酥，草色摇看近却无', '长安街上细密的春雨润滑如酥，远望草色连成一片，近看却又显得稀疏',
+        '一只老虎在草原上追捕一只小鹿', '大猫在飞速狂奔，捕杀猎物', '英雄联盟', 'lol'
     ]
     inputs = process_data(texts, None, clip_processor)
     with torch.no_grad():
@@ -103,9 +107,10 @@ def cal_image_image_sim(model, clip_processor):
     """
     print('-------------- 计算图图相似度 --------------')
     image_files = [
-        './images/test/autumn_car.jpeg', './images/test/bus.jpeg', './images/test/cat.jpeg', './images/test/cock.jpeg',
-        './images/test/cute_chick.jpeg', './images/test/dog.jpeg', './images/test/lake_tree.jpeg',
-        './images/test/tiger.jpeg', './images/test/tiger_river.jpeg'
+        './images/test/bus.jpeg', './images/test/bus2.jpeg',
+        './images/test/cat.jpeg', './images/test/cat2.jpeg', './images/test/cock.jpeg',
+        './images/test/cute_chick.jpeg', './images/test/dog.jpeg', './images/test/dog2.jpeg',
+        './images/test/tiger.jpeg', './images/test/tiger_river.jpeg', './images/test/autumn_car.jpeg'
     ]
     # 特征处理
     inputs = process_data(None, image_files, clip_processor)
@@ -135,7 +140,7 @@ def cal_image_image_sim(model, clip_processor):
 
 
 def main():
-    model_name_or_path = ''
+    model_name_or_path = 'YeungNLP/clip-vit-bert-chinese-1M'
     # 加载模型
     model, clip_processor = load_model_and_processor(model_name_or_path)
     # 预测相似度
