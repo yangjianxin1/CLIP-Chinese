@@ -1,0 +1,10 @@
+huggingface_hub==0.11.0
+loguru==0.6.0
+numpy==1.22.4
+opencv_python==4.6.0.66
+pandas==1.4.2
+Pillow==9.3.0
+requests==2.27.1
+torch==1.12.0
+tqdm==4.64.0
+transformers==4.18.0
