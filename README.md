@@ -1,7 +1,7 @@
 # CLIP-Chinese：中文多模态对比学习CLIP预训练模型
 
 ## 项目描述
-微信公众号【YeungNLP】文章：[xxx]() ，文章内可获取140w中文图文对预训练数据，以及中文CLIP预训练权重。
+微信公众号【YeungNLP】文章：[CLIP-Chinese：中文多模态对比学习预训练模型](https://mp.weixin.qq.com/s/6gQX91M-Lt7eiMimhYRJEw) ，文章内可获取140w中文图文对预训练数据，以及中文CLIP预训练权重。
 
 CLIP是由OpenAI提出的一种多模态对比学习方法，原模型使用了4亿个图文对进行对比学习训练，在下游的各种任务上均取得了不错的效果，并且在Zero-Shot任务上效果也令人惊艳。 
 模型论文可参考[CLIP论文：Learning Transferable Visual Models From Natural Language Supervision](https://arxiv.org/abs/2103.00020)
