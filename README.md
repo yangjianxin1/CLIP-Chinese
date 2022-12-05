@@ -182,6 +182,7 @@ text,url,filename
 
 
 ### 开始训练
+注：如果需要在YeungNLP/clip-vit-bert-chinese-1M权重的基础上做继续预训练，需要将令load_from_bert_clip=True，clip_pretrain_path="YeungNLP/clip-vit-bert-chinese-1M"。
 ```
 CUDA_VISIBLE_DEVICES=0 python train_clip.py --train_args_file train_args/train_clip.json
 
